@@ -1,9 +1,13 @@
 {
   "name": "wcr-lang-cpp",
   "version": "1.0.0",
-  "private": true,
   "type": "module",
   "description": "C / C++ 语言插件（阅读器全功能：高亮 · 大纲 · 跳转 · 引用 · Hover）",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yiluo-ya/wcr-lang-cpp.git"
+  },
   "wcr": { "lang": "./index.ts" },
   "dependencies": {
     "tree-sitter": "0.25.1",

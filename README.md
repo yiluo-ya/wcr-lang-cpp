@@ -28,14 +28,41 @@ namespace（含匿名）/ template / 限定名 `A::b` / 成员访问 `a.b`（`p-
 ## 安装 / 开发
 
 ```bash
+npm install
+
 # 开发态（改代码后重启阅读器即生效）
-wcr lang link <本目录>
+wcr lang link .
 
 # 或正式安装
-wcr lang add <本目录>
+wcr lang add .
+
+# 阅读器里：wcr lang list 应看到「C（c）· C++（cpp）」
 ```
 
 依赖装不上时看 `.npmrc`（`tree-sitter-c` / `tree-sitter-cpp` 的 peer 声明是过期的）。
+tree-sitter 走 prebuild，**不需要本地编译**。
+
+## 类型来源（单独 clone 后请注意）
+
+`index.ts` 只**按类型**引用阅读器的定义（`import type`）：
+
+```ts
+import type { LanguagePlugin } from '../ide/backend/src/languages/plugin';
+```
+
+这类导入在运行时会被完全擦除，所以**不影响使用** —— `wcr lang link .` 直接可用；
+但单独 clone 到别处时，编辑器与 `tsc --noEmit` 会报「找不到模块」。两种应对：
+
+1. 只要能用：忽略即可（运行时无关）。
+2. 想要类型提示：把阅读器仓库与本仓库**并排放**，且阅读器目录名为 `ide`：
+
+   ```
+   parent/
+   ├── ide/            ← 阅读器仓库
+   └── wcr-lang-cpp/   ← 本仓库
+   ```
+
+以后会提供 `@wcr/lang-sdk`（插件只需依赖它，不再相对引用阅读器源码）。
 
 ## 验证
 
@@ -44,3 +71,7 @@ wcr lang add <本目录>
 node tmp/cppverify.mjs <port>   # C1–C10 的 API 层验收
 node tmp/cppui.mjs <port>       # C1 的前端验收（真实页面里的着色）
 ```
+
+## 许可
+
+MIT，见 [LICENSE](LICENSE)。
